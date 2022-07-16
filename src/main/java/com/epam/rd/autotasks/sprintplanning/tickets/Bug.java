@@ -1,18 +1,26 @@
 package com.epam.rd.autotasks.sprintplanning.tickets;
 
 public class Bug extends Ticket {
+    UserStory userstory;
 
     public static Bug createBug(int id, String name, int estimate, UserStory userStory) {
-        throw new UnsupportedOperationException("Implement this method");
+        if (!userStory.isCompleted()) {
+            return null;
+        }
+//        throw new UnsupportedOperationException("Implement this method");
+        return new Bug(id, name, estimate, userStory);
     }
 
     private Bug(int id, String name, int estimate, UserStory userStory) {
         super(id, name, estimate);
-        throw new UnsupportedOperationException("Implement this method");
+        this.userstory=userStory;
+//        throw new UnsupportedOperationException("Implement this method");
     }
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("Implement this method");
+        String result = "[Bug "+Bug.this.getId()+"] "+userstory.name+": "+Bug.this.getName();
+        return result;
+//        throw new UnsupportedOperationException("Implement this method");
     }
 }

@@ -1,23 +1,47 @@
 package com.epam.rd.autotasks.sprintplanning.tickets;
 
-public class UserStory extends Ticket {
+import java.util.Arrays;
 
+public class UserStory extends Ticket {
+    UserStory[] dependsOn;
+    public int len=0;
     public UserStory(int id, String name, int estimate, UserStory... dependsOn) {
         super(id, name, estimate);
-        throw new UnsupportedOperationException("Implement this method");
+        this.dependsOn=dependsOn;
+        com=estimate;
+        if (dependsOn==null) {
+            throw new UnsupportedOperationException();
+        } else {
+        len=dependsOn.length;}
     }
 
     @Override
     public void complete() {
-        throw new UnsupportedOperationException("Implement this method");
+        int completed=0;
+        if (dependsOn==null){
+            com=0;
+        }
+        for (int i = 0; i < dependsOn.length; i++) {
+            if (dependsOn[i].isCompleted()) {
+                completed++;
+            }
+        }
+        if (completed==dependsOn.length) {
+            com=0;
+        }
+
+//        throw new UnsupportedOperationException("Implement this method");
     }
 
     public UserStory[] getDependencies() {
-        throw new UnsupportedOperationException("Implement this method");
+        return Arrays.copyOf(dependsOn, dependsOn.length);
+//        throw new UnsupportedOperationException("Implement this method");
     }
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("Implement this method");
+        String s="[US "+UserStory.this.id+"] "+UserStory.this.name;
+        return s;
+//        throw new UnsupportedOperationException("Implement this method");
     }
 }
