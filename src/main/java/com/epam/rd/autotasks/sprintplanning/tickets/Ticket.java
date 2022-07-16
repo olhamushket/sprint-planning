@@ -6,15 +6,12 @@ public class Ticket {
     public final int id;
     public final String name;
     public final int estimate;
-    public int com;
+    protected boolean isFinished;
 
     public Ticket(int id, String name, int estimate) {
-        super();
         this.id=id;
         this.name=name;
         this.estimate=estimate;
-        com=estimate;
-        //        throw new UnsupportedOperationException("Implement this method");
     }
 
     public int getId() {
@@ -28,12 +25,13 @@ public class Ticket {
     }
 
     public boolean isCompleted() {
-           return com==0;
+           return isFinished;
 //        throw new UnsupportedOperationException("Implement this method");
     }
 
-    public void complete() {
-        com=0;
+    public boolean complete() {
+        isFinished = true;
+        return false;
 //        throw new UnsupportedOperationException("Implement this method");
     }
 

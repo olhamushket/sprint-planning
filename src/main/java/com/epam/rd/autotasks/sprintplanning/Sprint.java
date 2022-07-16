@@ -6,63 +6,55 @@ import com.epam.rd.autotasks.sprintplanning.tickets.UserStory;
 
 import java.util.Arrays;
 
-public class Sprint{
-    private final int capacity;
-    private final int ticketsLimit;
-    public int totalEs = 0;
-    public int countTicket = 0;
-    Ticket[] list =new Ticket[10];
+public class Sprint {
+    protected int capacity;
+    protected int ticketsLimit;
+    protected int ticketsLimitCount;
+    protected int totalEstimate;
+    protected Ticket[] tickets;
+    protected int i;
 
-    public Sprint(int capacity, int ticketsLimit) throws UnsupportedOperationException {
+    public Sprint(int capacity, int ticketsLimit) {
         this.capacity = capacity;
         this.ticketsLimit = ticketsLimit;
+        tickets = new Ticket[ticketsLimit];
     }
 
-
     public boolean addUserStory(UserStory userStory) {
-        if (userStory==null) {
-            return false;
-        }
-        if (totalEs < capacity &&totalEs+userStory.getEstimate()<=capacity&& countTicket < ticketsLimit&&!userStory.isCompleted()) {
-            totalEs += userStory.getEstimate();
-            list[countTicket]=new Ticket(userStory.getId(), userStory.getName(), userStory.getEstimate());
-            countTicket++;
-            return true;
+        if (ticketsLimitCount < ticketsLimit && userStory != null&&userStory.getDependencies()!=null) {
+            if (totalEstimate + userStory.getEstimate() <= capacity && !userStory.isCompleted()) {
+                tickets[i] = userStory;
+                totalEstimate += userStory.getEstimate();
+                i++;
+                ticketsLimitCount++;
+                return true;
+            }
         }
         return false;
-//        throw new UnsupportedOperationException("Implement this method");
     }
 
     public boolean addBug(Bug bugReport) {
-//        throw new UnsupportedOperationException("Implement this method");
-        if (bugReport==null) {
-            return false;
-        }
-        if (totalEs < capacity&&totalEs+bugReport.getEstimate()<=capacity && countTicket < ticketsLimit-1&&!bugReport.isCompleted()) {
-            list[countTicket]=new Ticket(bugReport.getId(), bugReport.getName(), bugReport.getEstimate());
-            countTicket++;
-            return true;
+        if (ticketsLimitCount < ticketsLimit && bugReport != null) {
+            if (totalEstimate + bugReport.getEstimate() <= capacity && !bugReport.isCompleted()) {
+                tickets[i] = bugReport;
+                totalEstimate += bugReport.getEstimate();
+                i++;
+                ticketsLimitCount++;
+                return true;
+            }
         }
         return false;
     }
 
     public Ticket[] getTickets() {
-        Ticket[] tickets= new Ticket[countTicket];
-        for (int i=0; i<countTicket; i++){
-            tickets[i]=list[i];
-        }
-        return tickets;
-//        throw new UnsupportedOperationException("Implement this method");
+        return Arrays.copyOf(tickets, getTicketsLimitCount());
     }
 
     public int getTotalEstimate() {
-        return totalEs;
-//        throw new UnsupportedOperationException("Implement this method");
-//    }
+        return totalEstimate;
     }
-    @Override
-    public String toString() {
-        return String.format(getClass().getName() + "@" + Integer.toHexString(hashCode()),getTickets());
 
+    public int getTicketsLimitCount() {
+        return ticketsLimitCount;
     }
 }
